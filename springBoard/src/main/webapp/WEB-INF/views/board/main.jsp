@@ -99,10 +99,13 @@
 		                        startInput.focus();
 		                        startInput.value = '';
 		                        endInput.value = '';
+		                        startInput.setAttribute("max", "");
+		                        endInput.setAttribute("min", "");
 		                    }
 		                }
 		            }
 		        };
+
 
 		        if (row.closest('#educationTBody')) {
 		            educationRows.forEach(eduRow => {
@@ -122,38 +125,53 @@
 		    }
 
 		    function validateBirthdate() {
+		    	  console.log('validateBirthdate called'); // 추가
 		        const birthInput = document.getElementById('birth');
 		        const birthDate = new Date(birthInput.value);
 
-		        const checkStartDate = (rows) => {
+		        const checkDates = (rows) => {
 		            rows.forEach(row => {
 		                const startInput = row.querySelector('.startperiod');
+		                const endInput = row.querySelector('.endperiod');
 
 		                if (startInput) {
 		                    const startPeriod = startInput.value;
 		                    if (startPeriod) {
-		                        const startDate = new Date(startPeriod + '-01');
+		                        const startDate = new Date(startPeriod + '-01');	
 		                        if (startDate < birthDate) {
+		                        	startInput.value = '';
 		                            alert('경력 및 학력의 시작일은 생년월일보다 작을 수 없습니다.');
-		                            console.log(startPeriod)	
-		                            startInput.focus();
-		                            startInput.value = '';
-	
+		                            startInput.focus();		                          
+			                        endInput.setAttribute("min", "");
+		                        }
+		                    }
+		                }
+
+		                if (endInput) {
+		                    const endPeriod = endInput.value;
+		                    if (endPeriod) {
+		                        const endDate = new Date(endPeriod + '-01');
+		                        if (endDate < birthDate) {
+		                            endInput.value = '';
+		                            alert('경력 및 학력의 종료일은 생년월일보다 작을 수 없습니다.');
+		                            endInput.focus();
+			                        startInput.setAttribute("max", "");
 		                        }
 		                    }
 		                }
 		            });
 		        };
 
-		        checkStartDate(document.querySelectorAll('#educationTBody tr:not(#educationTableRowTemplate)'));
-		        checkStartDate(document.querySelectorAll('#careerTBody tr:not(#careerTableRowTemplate)'));
+		        checkDates(document.querySelectorAll('#educationTBody tr:not(#educationTableRowTemplate)'));
+		        checkDates(document.querySelectorAll('#careerTBody tr:not(#careerTableRowTemplate)'));
 		    }
+
 
 		    function validateAcqudate(input) {
 		        const birthInput = document.getElementById('birth');
 		        const birthDate = new Date(birthInput.value);
 		        const acquDateValue = new Date(input.value);
-
+	
 		        if (acquDateValue < birthDate) {
 		            alert('자격증 취득일은 생년월일보다 작을 수 없습니다.');
 		            input.focus();

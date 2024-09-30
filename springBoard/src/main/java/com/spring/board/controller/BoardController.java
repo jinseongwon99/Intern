@@ -446,9 +446,21 @@ public class BoardController {
 	private int calculateMonths(String start, String end) {
 	    String[] startArr = start.split("-");
 	    String[] endArr = end.split("-");
-	    return (Integer.parseInt(endArr[0]) - Integer.parseInt(startArr[0])) * 12 +
-	           (Integer.parseInt(endArr[1]) - Integer.parseInt(startArr[1]));
+	    
+	    int yearDiff = Integer.parseInt(endArr[0]) - Integer.parseInt(startArr[0]);
+	    int monthDiff = Integer.parseInt(endArr[1]) - Integer.parseInt(startArr[1]);
+	    
+	    int totalMonths = yearDiff * 12 + monthDiff;
+	    
+
+	    if (yearDiff == 0 && monthDiff == 0) {
+	        totalMonths += 1;
+	    }
+	    
+	    return totalMonths;
 	}
+
+
 
 	private String formatDuration(int totalMonths) {
 	    int years = totalMonths / 12;

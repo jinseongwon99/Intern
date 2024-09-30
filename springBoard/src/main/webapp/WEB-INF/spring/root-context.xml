@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+	<context:component-scan base-package="com.spring.board" />
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="dataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+	        <property name="url" value="jdbc:oracle:thin:@localhost:1521:orcl" />
+	        <property name="username" value="JIN" />
+	        <property name="password" value="1111" />
+	</bean> 
+	
+	<!-- 트랜잭션 -->	 	
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+        <constructor-arg ref="dataSourceSpied" />
+        <property name="logFormatter">
+            <bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+                <property name="loggingType" value="MULTI_LINE" />
+                <property name="sqlPrefix" value="SQL         :  "/>
+            </bean>
+        </property>
+    </bean>
+	
+	 <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	        <property name="dataSource" ref="dataSource" />
+	        <property name="mapperLocations" value="classpath:sql/**/*_sql.xml" />
+	 </bean>
+	 <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+	        <constructor-arg name = "sqlSessionFactory" ref="sqlSessionFactory" />
+	 </bean>
+				
+</beans>

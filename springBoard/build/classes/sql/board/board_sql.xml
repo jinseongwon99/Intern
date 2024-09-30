@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+    <resultMap id="ComCodeVo" type="com.spring.board.vo.ComCodeVo">
+        <result property="codeId" column="CODE_ID"/>
+        <result property="codeName" column="CODE_NAME"/>
+        <result property="codeType" column="CODE_TYPE"/>      
+    </resultMap>
+    
+    <resultMap id="boardVo" type="com.spring.board.vo.BoardVo">
+        <result property="boardType" column="BOARD_TYPE"/>
+        <result property="boardNum" column="BOARD_NUM"/>
+        <result property="boardTitle" column="BOARD_TITLE"/>
+        <result property="boardComment" column="BOARD_COMMENT"/>
+    </resultMap>
+    
+    <resultMap id="UserInfoVo" type="com.spring.board.vo.UserInfoVo">
+	    <result property="userId" column="USER_ID"/>
+	    <result property="userPw" column="USER_PW"/>
+	</resultMap>
+	
+	<resultMap id="PageVo" type="com.spring.board.vo.PageVo">
+	    <result property="name" column="NAME"/>
+	    <result property="phone" column="PHONE"/>
+	</resultMap>
+	
+	<resultMap id="RecruitVo" type="com.spring.board.vo.RecruitVo">
+    <result property="recruitlocation" column="RECRUIT_LOCATION"/>
+    <result property="worktype" column="WORK_TYPE"/>
+    <!-- 추가 필드 매핑 필요 시 추가 -->
+	</resultMap>
+
+	<resultMap id="EducationVo" type="com.spring.board.vo.EducationVo">
+	    <result property="eduseq" column="EDU_SEQ"/>
+	    <result property="schoolname" column="SCHOOL_NAME"/>
+	    <result property="startperiod" column="START_PERIOD"/>
+	    <result property="endperiod" column="END_PERIOD"/>
+	    <result property="schoollocation" column="SCHOOL_LOCATION"/>
+	</resultMap>
+	
+	<resultMap id="CareerVo" type="com.spring.board.vo.CareerVo">
+	    <result property="carseq" column="CAR_SEQ"/>
+	    <result property="compname" column="COMP_NAME"/>
+	    <result property="careerlocation" column="CAREER_LOCATION"/>
+	    <result property="startperiod" column="START_PERIOD"/>
+	    <result property="endperiod" column="END_PERIOD"/>
+	</resultMap>
+	
+	<resultMap id="CertificateVo" type="com.spring.board.vo.CertificateVo">
+	    <result property="certseq" column="CERT_SEQ"/>
+	    <result property="qualifiname" column="QUALIFI_NAME"/>
+	    <result property="acqudate" column="ACQU_DATE"/>
+	    <result property="organizename" column="ORGANIZE_NAME"/>
+	</resultMap>
+
+
+    <select id="boardList" parameterType="com.spring.board.vo.PageVo" resultMap="boardVo">
+        SELECT 
+            BOARD_TYPE,
+            BOARD_NUM,
+            BOARD_TITLE,
+            BOARD_COMMENT,
+            TOTAL_CNT
+        FROM (
+            SELECT
+                BOARD_TYPE,
+                BOARD_NUM,
+                BOARD_TITLE,
+                BOARD_COMMENT,
+                ROW_NUMBER() OVER(ORDER BY BOARD_NUM DESC) AS NUMROW,
+                COUNT(*) OVER() AS TOTAL_CNT
+            FROM BOARD
+            <where>
+                <if test="types != null and types.size() > 0">
+                    AND BOARD_TYPE IN
+                    <foreach item="type" collection="types" open="(" separator="," close=")">
+                        #{type}
+                    </foreach>
+                </if>
+            </where>
+        )
+        WHERE NUMROW BETWEEN (#{pageNo} - 1) * 10 + 1 AND #{pageNo} * 10
+    </select>
+    
+    <select id="codeList" resultMap="ComCodeVo">
+        SELECT
+            CODE_TYPE AS codeType,
+            CODE_ID AS codeId,
+            CODE_NAME AS codeName
+        FROM 
+            COM_CODE
+        WHERE 
+            CODE_TYPE = 'menu'
+    </select>
+    
+    <select id="boardTotal" parameterType="Integer" resultType="Integer">
+        SELECT 
+            COUNT(*)
+        FROM BOARD
+        <where>
+            <if test="types != null and types.size() > 0">
+                AND BOARD_TYPE IN
+                <foreach item="type" collection="types" open="(" separator="," close=")">
+                    #{type}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    
+    <select id="boardView" parameterType="com.spring.board.vo.BoardVo" resultMap="boardVo">
+        SELECT
+            BOARD_TYPE,
+            BOARD_NUM,
+            BOARD_TITLE,
+            BOARD_COMMENT     
+        FROM BOARD
+        WHERE 
+            BOARD_TYPE = #{boardType}
+            AND BOARD_NUM = #{boardNum}
+    </select>
+
+    <insert id="boardInsert" parameterType="com.spring.board.vo.BoardVo">
+        INSERT INTO BOARD (
+            BOARD_TYPE,
+            BOARD_NUM,
+            BOARD_TITLE,
+            BOARD_COMMENT,
+            CREATOR,
+            CREATE_TIME,
+            MODIFIER,
+            MODIFIED_TIME
+        )
+        SELECT
+            #{boardType},
+            NVL(MAX(BOARD_NUM), 0) + 1,
+            #{boardTitle},
+            #{boardComment},
+            #{Creator},
+            SYSDATE,
+            'SYSTEM',
+            SYSDATE
+        FROM BOARD
+    </insert>
+
+    <update id="boardUpdate" parameterType="com.spring.board.vo.BoardVo">
+        UPDATE BOARD
+        SET
+            BOARD_TITLE = #{boardTitle},
+            BOARD_COMMENT = #{boardComment},
+            MODIFIER = 'SYSTEM',
+            MODIFIED_TIME = SYSDATE
+        WHERE
+            BOARD_TYPE = #{boardType}
+            AND BOARD_NUM = #{boardNum}
+    </update>
+
+    <delete id="boardDelete" parameterType="com.spring.board.vo.BoardVo">
+        DELETE FROM BOARD
+        WHERE
+            BOARD_TYPE = #{boardType}
+            AND BOARD_NUM = #{boardNum}
+    </delete>
+
+    <select id="login" parameterType="com.spring.board.vo.UserInfoVo" resultMap="UserInfoVo">
+	    SELECT 
+	    	USER_ID,
+	    	USER_PW 
+	    FROM 
+	    	USER_INFO 	
+	    WHERE 
+	    	USER_ID = #{userId}
+	</select>
+
+    <insert id="joinInsert" parameterType="com.spring.board.vo.UserInfoVo">
+        INSERT INTO USER_INFO (
+            USER_ID,
+            USER_PW,
+            USER_NAME,
+            USER_PHONE1,
+            USER_PHONE2,
+            USER_PHONE3,
+            USER_ADDR1,
+            USER_ADDR2,
+            USER_COMPANY,
+            CREATOR,
+            CREATE_TIME,
+            MODIFIER,
+            MODIFIED_TIME
+        )
+        VALUES (
+            #{userId},
+            #{userPw},
+            #{userName},
+            #{userPhone1},
+            #{userPhone2},
+            #{userPhone3},
+            #{userAddr1},
+            #{userAddr2},
+            #{userCompany},
+            'SYSTEM',
+            SYSDATE,
+            'SYSTEM',
+            SYSDATE
+        )
+    </insert>
+	
+    <select id="idCheck" parameterType="String" resultType="Integer">
+        SELECT 
+            COUNT(*)
+        FROM 
+            USER_INFO
+        WHERE 
+            USER_ID = #{userId}
+    </select>
+
+    <select id="phoneList" resultMap="ComCodeVo">
+        SELECT
+            CODE_TYPE AS codeType,
+            CODE_NAME AS codeName,
+            CODE_ID AS codeId
+        FROM 
+            COM_CODE
+        WHERE 
+            CODE_TYPE = 'phone'
+    </select>
+    
+    <select id="QuestionList" resultMap="boardVo">
+        SELECT
+        	BOARD_TYPE,
+            BOARD_NUM,
+            BOARD_COMMENT 
+        FROM 
+            BOARD
+        WHERE 
+            BOARD_TITLE = 'mbti'
+            ORDER BY BOARD_NUM ASC
+    </select>
+    
+	<insert id="recruitInsert" parameterType="com.spring.board.vo.RecruitVo">
+	    <selectKey keyProperty="seq" resultType="String" order="AFTER">
+	        SELECT SEQ.CURRVAL
+	        FROM DUAL
+	    </selectKey>
+	    INSERT INTO RECRUIT (
+	        SEQ,
+	        NAME,
+	        PHONE
+	    )
+	    VALUES (
+	        SEQ.NEXTVAL,
+	        #{name},
+	        #{phone}
+	    )
+	</insert>
+	
+
+
+    
+    <select id="Check" parameterType="String" resultType="String">
+        SELECT 
+            SEQ
+        FROM 
+            RECRUIT
+        WHERE 
+            NAME = #{name} and PHONE = #{phone}
+    </select>
+
+   <update id="UpdateRecruit" parameterType="com.spring.board.vo.RecruitVo">
+    UPDATE RECRUIT
+    SET
+        BIRTH = #{birth, jdbcType=VARCHAR},
+        GENDER = #{gender, jdbcType=VARCHAR},
+        EMAIL = #{email, jdbcType=VARCHAR},
+        ADDR = #{addr, jdbcType=VARCHAR},
+        RECRUIT_LOCATION = #{recruitlocation, jdbcType=VARCHAR},
+        WORK_TYPE = #{worktype, jdbcType=VARCHAR},
+        SUBMIT = #{submit, jdbcType=VARCHAR}
+    WHERE
+        SEQ = #{seq, jdbcType=VARCHAR}
+</update>
+
+<insert id="InsertEducation" parameterType="com.spring.board.vo.EducationVo">
+    INSERT INTO Education (
+        EDU_SEQ,
+        SEQ,
+        SCHOOL_NAME,
+        DIVISION,
+        START_PERIOD,
+        END_PERIOD,
+        MAJOR,
+        GRADE,
+        SCHOOL_LOCATION
+    )
+    VALUES (
+        EDU_SEQ.NEXTVAL,
+        #{seq, jdbcType=VARCHAR},
+        #{schoolname, jdbcType=VARCHAR},
+        #{division, jdbcType=VARCHAR},
+        #{startperiod, jdbcType=VARCHAR},
+        #{endperiod, jdbcType=VARCHAR},
+        #{major, jdbcType=VARCHAR},
+        #{grade, jdbcType=VARCHAR},
+        #{schoollocation, jdbcType=VARCHAR}
+    )
+</insert>
+
+
+<insert id="InsertCareer" parameterType="com.spring.board.vo.CareerVo">
+    INSERT INTO Career (
+        CAR_SEQ,
+        SEQ,
+        COMP_NAME,
+        CAREER_LOCATION,
+        START_PERIOD,
+        END_PERIOD,
+        TASK,
+        SALARY
+    )
+    VALUES (
+        CAR_SEQ.NEXTVAL,
+        #{seq, jdbcType=INTEGER},
+        #{compname, jdbcType=VARCHAR},
+        #{careerlocation, jdbcType=VARCHAR},
+        #{startperiod, jdbcType=VARCHAR},
+        #{endperiod, jdbcType=VARCHAR},
+        #{task, jdbcType=VARCHAR},
+        '회사내규로 고정'
+    )
+</insert>
+
+<insert id="InsertCertificate" parameterType="com.spring.board.vo.CertificateVo">
+    INSERT INTO Certificate (
+        CERT_SEQ,
+        SEQ,
+        QUALIFI_NAME,
+        ACQU_DATE,
+        ORGANIZE_NAME
+    )
+    VALUES (
+        CERT_SEQ.NEXTVAL,
+        #{seq, jdbcType=INTEGER},
+        #{qualifiname, jdbcType=VARCHAR},
+        #{acqudate, jdbcType=VARCHAR},
+        #{organizename, jdbcType=VARCHAR}
+    )
+</insert>
+
+<select id="recruitList" resultMap="RecruitVo">
+    SELECT
+        *
+    FROM 
+        Recruit
+    WHERE 
+        SEQ = #{seq, jdbcType=VARCHAR}
+</select>
+
+<select id="educationList" resultMap="EducationVo">
+    SELECT
+        *
+    FROM 
+        Education
+    WHERE 
+        SEQ = #{seq, jdbcType=VARCHAR}
+</select>
+
+<select id="careerList" resultMap="CareerVo">
+    SELECT
+        *
+    FROM 
+        Career
+    WHERE 
+        SEQ = #{seq, jdbcType=VARCHAR}
+</select>
+
+<select id="certificateList" resultMap="CertificateVo">
+    SELECT
+        *
+    FROM 
+        Certificate
+    WHERE 
+        SEQ = #{seq, jdbcType=VARCHAR}
+</select>
+
+   <update id="UpdateEducation" parameterType="com.spring.board.vo.EducationVo">
+    UPDATE EDUCATION
+    SET
+        SCHOOL_NAME = #{schoolname, jdbcType=VARCHAR},
+        DIVISION = #{division, jdbcType=VARCHAR},
+        START_PERIOD = #{startperiod, jdbcType=VARCHAR},
+        END_PERIOD = #{endperiod, jdbcType=VARCHAR},
+        MAJOR = #{major, jdbcType=VARCHAR},
+        GRADE = #{grade, jdbcType=VARCHAR},
+        SCHOOL_LOCATION = #{schoollocation, jdbcType=VARCHAR}
+    WHERE
+        EDU_SEQ = #{eduseq, jdbcType=VARCHAR}
+</update>
+
+   <update id="UpdateCareer" parameterType="com.spring.board.vo.CareerVo">
+    UPDATE CAREER
+    SET
+        COMP_NAME = #{compname, jdbcType=VARCHAR},
+        CAREER_LOCATION = #{careerlocation, jdbcType=VARCHAR},
+        START_PERIOD = #{startperiod, jdbcType=VARCHAR},
+        END_PERIOD = #{endperiod, jdbcType=VARCHAR},
+        TASK = #{task, jdbcType=VARCHAR}      
+    WHERE
+        CAR_SEQ = #{carseq, jdbcType=VARCHAR}
+</update>
+
+   <update id="UpdateCertificate" parameterType="com.spring.board.vo.CertificateVo">
+    UPDATE CERTIFICATE
+    SET
+        QUALIFI_NAME = #{qualifiname, jdbcType=VARCHAR},
+        ACQU_DATE = #{acqudate, jdbcType=VARCHAR},
+        ORGANIZE_NAME = #{organizename, jdbcType=VARCHAR}
+    WHERE
+        CERT_SEQ = #{certseq, jdbcType=VARCHAR}
+</update>
+
+    <delete id="educationDelete" parameterType="com.spring.board.vo.EducationVo">
+        DELETE FROM EDUCATION
+        WHERE
+            EDU_SEQ = #{eduseq}
+    </delete>
+    
+        <delete id="careerDelete" parameterType="com.spring.board.vo.CareerVo">
+        DELETE FROM CAREER
+        WHERE
+            CAR_SEQ = #{carseq}
+    </delete>
+    
+        <delete id="certificateDelete" parameterType="com.spring.board.vo.CertificateVo">
+        DELETE FROM CERTIFICATE
+        WHERE
+            CERT_SEQ = #{certseq}
+    </delete>
+</mapper>

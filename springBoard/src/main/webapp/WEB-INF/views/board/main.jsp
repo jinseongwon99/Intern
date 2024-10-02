@@ -125,7 +125,6 @@
 		    }
 
 		    function validateBirthdate() {
-		    	  console.log('validateBirthdate called'); // 추가
 		        const birthInput = document.getElementById('birth');
 		        const birthDate = new Date(birthInput.value);
 
@@ -299,6 +298,7 @@
 
 	        $(this).val(v);
 	    });
+	    
 
 	    $('#phone').on('input', function() {
 	        var input = $(this).val().replace(/[^0-9]/g, ''); 
@@ -330,73 +330,76 @@
 	        }
 
 	        const educationRows = $('#educationTBody tr:not(#educationTableRowTemplate)');
+
 	        for (let i = 0; i < educationRows.length; i++) {
 	            const rowElement = $(educationRows[i]);
-	            const missingFields = [];
 
-	            const schoolName = rowElement.find('.schoolname').val();
-	            const major = rowElement.find('.major').val();
-	            const grade = rowElement.find('.grade').val();
-	            const startInput = rowElement.find('.startperiod').val();
-	            const endInput = rowElement.find('.endperiod').val();
+	            const fields = [
+	                { name: '재학 시작일', field: rowElement.find('.startperiod') },
+	                { name: '재학 종료일', field: rowElement.find('.endperiod') },
+	                { name: '학교명', field: rowElement.find('.schoolname') },
+	                { name: '전공', field: rowElement.find('.major') },
+	                { name: '학점', field: rowElement.find('.grade') }
+	            ];
 
-	            if (!startInput) missingFields.push({ name: '재학 시작일', field: rowElement.find('.startperiod') });
-	            if (!endInput) missingFields.push({ name: '재학 종료일', field: rowElement.find('.endperiod') });
-	            if (!schoolName) missingFields.push({ name: '학교명', field: rowElement.find('.schoolname') });
-	            if (!major) missingFields.push({ name: '전공', field: rowElement.find('.major') });
-	            if (!grade) missingFields.push({ name: '학점', field: rowElement.find('.grade') });
-
-	            if (missingFields.length > 0) {
-	                alert(missingFields.map(field => field.name).join(', ') + "을 입력해주세요.");
-	                missingFields[0].field.focus(); 
-	                return false;
-	            }
-	        }
-
-	        const careerRows = $('#careerTBody tr:not(#careerTableRowTemplate)');
-	        for (let i = 0; i < careerRows.length; i++) {
-	            const rowElement = $(careerRows[i]);
-	            const startInput = rowElement.find('.startperiod').val();
-	            const endInput = rowElement.find('.endperiod').val();
-	            const companyName = rowElement.find('input[name="compname"]').val();
-	            const task = rowElement.find('input[name="task"]').val();
-	            const location = rowElement.find('input[name="careerlocation"]').val();
-
-	            if (startInput || endInput || companyName || task || location) {
-	                const missingFields = [];
-
-	                if (!startInput) missingFields.push({ name: '근무 시작일', field: rowElement.find('.startperiod') });
-	                if (!endInput) missingFields.push({ name: '근무 종료일', field: rowElement.find('.endperiod') });
-	                if (!companyName) missingFields.push({ name: '회사명', field: rowElement.find('input[name="compname"]') });
-	                if (!task) missingFields.push({ name: '부서/직급/직책', field: rowElement.find('input[name="task"]') });
-	                if (!location) missingFields.push({ name: '지역', field: rowElement.find('input[name="careerlocation"]') });
-
-	                if (missingFields.length > 0) {
-	                    alert(missingFields.map(field => field.name).join(', ') + "을 입력해주세요.");
-	                    missingFields[0].field.focus(); 
+	            for (const { name, field } of fields) {
+	                if (!field.val()) {
+	                    alert(name + '을 입력해주세요.'); // 수정된 부분
+	                    field.focus();
 	                    return false;
 	                }
 	            }
 	        }
 
+
+	        const careerRows = $('#careerTBody tr:not(#careerTableRowTemplate)');
+
+	        for (let i = 0; i < careerRows.length; i++) {
+	            const rowElement = $(careerRows[i]);
+
+	            const fields = [
+	                { name: '근무 시작일', field: rowElement.find('.startperiod') },
+	                { name: '근무 종료일', field: rowElement.find('.endperiod') },
+	                { name: '회사명', field: rowElement.find('input[name="compname"]') },
+	                { name: '부서/직급/직책', field: rowElement.find('input[name="task"]') },
+	                { name: '지역', field: rowElement.find('input[name="careerlocation"]') }
+	            ];
+
+
+	            const hasAnyInput = fields.some(({ field }) => field.val());
+
+	            if (hasAnyInput) {
+	                for (const { name, field } of fields) {
+	                    if (!field.val()) {
+	                    	alert(name + '을 입력해주세요.');
+	                        field.focus();
+	                        return false;
+	                    }
+	                }
+	            }
+	        }
+
+
 	        const certificateRows = $('#certificateTBody tr:not(#certificateTableRowTemplate)');
+
 	        for (let i = 0; i < certificateRows.length; i++) {
 	            const rowElement = $(certificateRows[i]);
-	            const qualifiname = rowElement.find('input[name="qualifiname"]').val();
-	            const acqudate = rowElement.find('input[name="acqudate"]').val();
-	            const organizename = rowElement.find('input[name="organizename"]').val();
 
-	            if (qualifiname || acqudate || organizename) {
-	                const missingFields = [];
+	            const fields = [
+	                { name: '자격증명', field: rowElement.find('input[name="qualifiname"]') },
+	                { name: '취득일', field: rowElement.find('input[name="acqudate"]') },
+	                { name: '발행처', field: rowElement.find('input[name="organizename"]') }
+	            ];
 
-	                if (!qualifiname) missingFields.push({ name: '자격증명', field: rowElement.find('input[name="qualifiname"]') });
-	                if (!acqudate) missingFields.push({ name: '취득일', field: rowElement.find('input[name="acqudate"]') });
-	                if (!organizename) missingFields.push({ name: '발행처', field: rowElement.find('input[name="organizename"]') });
+	            const hasAnyInput = fields.some(({ field }) => field.val());
 
-	                if (missingFields.length > 0) {
-	                    alert(missingFields.map(field => field.name).join(', ') + "을 입력해주세요.");
-	                    missingFields[0].field.focus(); 
-	                    return false;
+	            if (hasAnyInput) {
+	                for (const { name, field } of fields) {
+	                    if (!field.val()) {
+	                        alert(name + '을 입력해주세요.');
+	                        field.focus();
+	                        return false;
+	                    }
 	                }
 	            }
 	        }
@@ -457,6 +460,38 @@
 
             $(this).val(v);
         });
+        $(document).on('input', 'input[name="task"]', function() { 
+            let v = $(this).val().replace(/[^\u3131-\u3163\uAC00-\uD7A3]/g, ''); // 한글만 허용
+            const maxLength = 6; // 최대 6자리로 설정
+
+            // 최대 길이 초과 처리
+            if (v.length > maxLength) {
+                v = v.slice(0, maxLength); // 최대 길이를 초과하면 잘라냄
+            }
+
+            // 슬래시 추가 로직
+            let formattedValue = '';
+            for (let i = 0; i < v.length; i++) {
+                if (i > 0 && i % 2 === 0) {
+                    formattedValue += '/'; // 두 글자마다 슬래시 추가
+                }
+                formattedValue += v[i]; // 한 글자씩 추가
+            }
+
+            // 입력값을 업데이트합니다.
+            $(this).val(formattedValue);
+        });
+
+
+        $(document).on('keydown', 'input[name="task"]', function(event) {
+            if (event.key === 'Backspace') {
+                const currentValue = $(this).val();
+                if (currentValue.length > 0) {
+                    $(this).val(currentValue.slice(0, -1));
+                }
+            }
+        });
+ 
         $("#saveButton").on("click", function(event) {
             event.preventDefault();
             if (validateFields() && validateEmail()) {
@@ -584,6 +619,26 @@
 	    window.add_certificatetable = function() { add_table('certificate'); }
 	    window.del_certificatetable = function() { del_table('certificate'); }
 
+	    $("#task").on('input', function() {
+	        let v = $(this).val().replace(/[^a-zA-Z0-9]/g, ''); // 알파벳과 숫자만 허용
+	        const maxLength = 10;
+
+	        // 슬래시 추가 로직
+	        if (v.length >= 2) {
+	            v = v.slice(0, 2) + '/' + v.slice(2);
+	        }
+	        if (v.length >= 5) {
+	            v = v.slice(0, 5) + '/' + v.slice(5);
+	        }
+
+	        // 슬래시가 추가된 후 길이가 최대 길이를 초과하면 잘라냅니다.
+	        if (v.length > maxLength) {
+	            v = v.slice(0, maxLength);
+	        }
+
+	        // 입력값을 업데이트합니다.
+	        $(this).val(v);
+	    });
 
 	});
 </script>
@@ -852,7 +907,7 @@
 					                        <input type="month" class="endperiod" name="endperiod" value="${career.endperiod}" style="width: 80%;" onChange="setendmax(this.value, this)">
 					                    </td>
 					                    <td align="left"><input type="text" name="compname" value="${career.compname}" style="width: 97.5%;" maxlength="10"></td>
-					                    <td align="center"><input type="text" name="task" value="${career.task}" style="width: 93%;" maxlength="10" ></td>
+					                    <td align="center"><input type="text" id="task" name="task" value="${career.task}" style="width: 93%;" maxlength="10" ></td>
 					                    <td align="center">
 					                        <input type="text" name="careerlocation" value="${career.careerlocation}" style="width: 93%;" maxlength="10">
 					                        <input type="hidden" name="carseq" value="${career.carseq}">
@@ -869,7 +924,9 @@
 					                    <input type="month" class="endperiod" name="endperiod" style="width: 80%;" onChange="setendmax(this.value, this)">
 					                </td>
 					                <td align="left"><input type="text" name="compname" style="width: 97.5%;" maxlength="10"></td>
-					                <td align="center"><input type="text" name="task" style="width: 93%;" maxlength="10"></td>
+					               <td align="center">
+									    <input type="text" name="task" style="width: 93%;" maxlength="10" id="task">
+									</td>
 					                <td align="center">
 					                    <input type="text" name="careerlocation" style="width: 93%;" maxlength="10">
 					                    <input type="hidden" name="carseq">

@@ -450,12 +450,10 @@ public class BoardController {
 	    int yearDiff = Integer.parseInt(endArr[0]) - Integer.parseInt(startArr[0]);
 	    int monthDiff = Integer.parseInt(endArr[1]) - Integer.parseInt(startArr[1]);
 	    
-	    int totalMonths = yearDiff * 12 + monthDiff;
+	    int totalMonths = yearDiff * 12 + monthDiff + 1;
 	    
 
-	    if (yearDiff == 0 && monthDiff == 0) {
-	        totalMonths += 1;
-	    }
+	 
 	    
 	    return totalMonths;
 	}

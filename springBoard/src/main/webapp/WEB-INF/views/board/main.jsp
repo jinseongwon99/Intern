@@ -344,7 +344,7 @@
 
 	            for (const { name, field } of fields) {
 	                if (!field.val()) {
-	                    alert(name + '을 입력해주세요.'); // 수정된 부분
+	                    alert(name + '을 입력해주세요.'); 
 	                    field.focus();
 	                    return false;
 	                }
@@ -478,7 +478,6 @@
         $(document).on('blur', 'input[name="task"]', function() {
             let v = $(this).val();
 
-            // 6글자가 입력되었는지 확인
             if (v.length === 6) {
                 let formattedValue = '';
                 for (let i = 0; i < v.length; i++) {

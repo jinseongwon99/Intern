@@ -1,5 +1,7 @@
 package com.spring.board.vo;
 
+import java.util.Map;
+
 public class EducationVo {
 	
 	private String eduseq;
@@ -66,5 +68,17 @@ public class EducationVo {
 		this.schoollocation = schoollocation;
 	}
  	
+
+    public static EducationVo fromMap(Map<String, Object> map) {
+        EducationVo educationVo = new EducationVo();
+        educationVo.setSchoolname((String) map.get("schoolname"));
+        educationVo.setDivision((String) map.get("division"));
+        educationVo.setStartperiod((String) map.get("startperiod"));
+        educationVo.setEndperiod((String) map.get("endperiod"));
+        educationVo.setMajor((String) map.get("major"));
+        educationVo.setGrade((String) map.get("grade"));
+        educationVo.setSchoollocation((String) map.get("schoollocation"));
+        return educationVo;
+    }
 	
 }

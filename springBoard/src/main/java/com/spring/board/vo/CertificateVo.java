@@ -1,5 +1,7 @@
 package com.spring.board.vo;
 
+import java.util.Map;
+
 public class CertificateVo {
 
 	private String certseq;
@@ -38,4 +40,12 @@ public class CertificateVo {
 	public void setOrganizename(String organizename) {
 		this.organizename = organizename;
 	}
+	
+	public static CertificateVo fromMap(Map<String, Object> map) {
+        CertificateVo certificateVo = new CertificateVo();
+        certificateVo.setQualifiname((String) map.get("qualifiname"));
+        certificateVo.setAcqudate((String) map.get("acqudate"));
+        certificateVo.setOrganizename((String) map.get("organizename"));
+        return certificateVo;
+    }
 }

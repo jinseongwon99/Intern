@@ -1,5 +1,7 @@
 package com.spring.board.vo;
 
+import java.util.Map;
+
 public class RecruitVo {
 	private String seq;
 	private String name;
@@ -73,5 +75,19 @@ public class RecruitVo {
 		this.submit = submit;
 	}
 	
+	 public static RecruitVo fromMap(Map<String, Object> map) {
+	        RecruitVo recruitVo = new RecruitVo();
+	        recruitVo.setSeq((String) map.get("seq"));
+	        recruitVo.setName((String) map.get("name"));
+	        recruitVo.setPhone((String) map.get("phone"));
+	        recruitVo.setBirth((String) map.get("birth"));
+	        recruitVo.setGender((String) map.get("gender"));
+	        recruitVo.setEmail((String) map.get("email"));
+	        recruitVo.setAddr((String) map.get("addr"));
+	        recruitVo.setRecruitlocation((String) map.get("recruitlocation"));
+	        recruitVo.setWorktype((String) map.get("worktype"));
+	        recruitVo.setSubmit((String) map.get("submit"));
+	        return recruitVo;
+	    }
 	
 }

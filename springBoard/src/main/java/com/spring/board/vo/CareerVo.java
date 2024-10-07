@@ -1,5 +1,7 @@
 package com.spring.board.vo;
 
+import java.util.Map;
+
 public class CareerVo {
 
 	private String carseq;
@@ -59,5 +61,13 @@ public class CareerVo {
 		this.salary = salary;
 	}
 	
-	
+	  public static CareerVo fromMap(Map<String, Object> map) {
+	        CareerVo careerVo = new CareerVo();
+	        careerVo.setCompname((String) map.get("compname"));
+	        careerVo.setCareerlocation((String) map.get("careerlocation"));
+	        careerVo.setStartperiod((String) map.get("startperiod"));
+	        careerVo.setEndperiod((String) map.get("endperiod"));
+	        careerVo.setTask((String) map.get("task"));
+	        return careerVo;
+	    }
 }

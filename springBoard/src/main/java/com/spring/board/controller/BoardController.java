@@ -446,18 +446,14 @@ public class BoardController {
 	private int calculateMonths(String start, String end) {
 	    String[] startArr = start.split("-");
 	    String[] endArr = end.split("-");
-	    
+
 	    int yearDiff = Integer.parseInt(endArr[0]) - Integer.parseInt(startArr[0]);
 	    int monthDiff = Integer.parseInt(endArr[1]) - Integer.parseInt(startArr[1]);
-	    
-	    int totalMonths = yearDiff * 12 + monthDiff + 1;
-	    
 
-	 
-	    
+	    int totalMonths = yearDiff * 12 + monthDiff + 1;
+
 	    return totalMonths;
 	}
-
 
 
 	private String formatDuration(int totalMonths) {
@@ -474,120 +470,70 @@ public class BoardController {
 	    HashMap<String, String> result = new HashMap<>();
 	    boolean allSuccess = true;
 
-	    Map<String, Object> recruitData = (Map<String, Object>) requestData.get("recruit");
-	    RecruitVo recruitVo = new RecruitVo();
-	    recruitVo.setSeq((String) recruitData.get("seq"));
-	    recruitVo.setName((String) recruitData.get("name"));
-	    recruitVo.setPhone((String) recruitData.get("phone"));
-	    recruitVo.setBirth((String) recruitData.get("birth"));
-	    recruitVo.setGender((String) recruitData.get("gender"));
-	    recruitVo.setEmail((String) recruitData.get("email"));
-	    recruitVo.setAddr((String) recruitData.get("addr"));
-	    recruitVo.setRecruitlocation((String) recruitData.get("recruitlocation"));
-	    recruitVo.setWorktype((String) recruitData.get("worktype"));
-	    recruitVo.setSubmit((String) recruitData.get("submit"));
-
-	    System.out.println("RecruitVo: " + recruitVo);
-
+	    RecruitVo recruitVo = RecruitVo.fromMap((Map<String, Object>) requestData.get("recruit"));
 	    int recruit = boardService.UpdateRecruit(recruitVo);
 	    if (recruit <= 0) {
 	        allSuccess = false;
 	    }
 
 	    List<Map<String, Object>> educationList = (List<Map<String, Object>>) requestData.get("education");
-
 	    for (Map<String, Object> educationData : educationList) {
-	        EducationVo educationVo = new EducationVo();
-	        educationVo.setSeq((String) recruitData.get("seq"));
-	        educationVo.setSchoolname((String) educationData.get("schoolname"));
-	        educationVo.setDivision((String) educationData.get("division"));
-	        educationVo.setStartperiod((String) educationData.get("startperiod"));
-	        educationVo.setEndperiod((String) educationData.get("endperiod"));
-	        educationVo.setMajor((String) educationData.get("major"));
-	        educationVo.setGrade((String) educationData.get("grade"));
-	        educationVo.setSchoollocation((String) educationData.get("schoollocation"));
-	        
+	        if (educationData == null || educationData.isEmpty()) continue;
+
+	        EducationVo educationVo = EducationVo.fromMap(educationData);
+	        educationVo.setSeq(recruitVo.getSeq());
+
 	        String eduseq = (String) educationData.get("eduseq");
-	        
 	        if (eduseq == null || eduseq.trim().isEmpty()) {
-	            int Insert = boardService.InsertEducation(educationVo);
-	            if (Insert <= 0) {
-	                allSuccess = false;
-	            }
-	        } else {
-	            educationVo.setEduseq(eduseq);
-	            int update = boardService.UpdateEducation(educationVo); 
-	            if (update <= 0) {
-	                allSuccess = false;
-	            }
-	        }
-	    }
-
-	    List<Map<String, Object>> careerList = (List<Map<String, Object>>) requestData.get("career");
-	    for (Map<String, Object> careerData : careerList) {
-
-	    	if (careerData.get("compname") == null || ((String) careerData.get("compname")).trim().isEmpty() ||
-	            careerData.get("careerlocation") == null || ((String) careerData.get("careerlocation")).trim().isEmpty() ||
-	            careerData.get("startperiod") == null || ((String) careerData.get("startperiod")).trim().isEmpty() ||
-	            careerData.get("endperiod") == null || ((String) careerData.get("endperiod")).trim().isEmpty() ||
-	            careerData.get("task") == null || ((String) careerData.get("task")).trim().isEmpty()) {
-	            continue; 
-	        }
-
-	        CareerVo careerVo = new CareerVo();
-	        careerVo.setSeq((String) recruitData.get("seq"));
-	        careerVo.setCompname((String) careerData.get("compname"));
-	        careerVo.setCareerlocation((String) careerData.get("careerlocation"));
-	        careerVo.setStartperiod((String) careerData.get("startperiod"));
-	        careerVo.setEndperiod((String) careerData.get("endperiod"));
-	        careerVo.setTask((String) careerData.get("task"));
-	        
-	        String carseq = (String) careerData.get("carseq");
-
-	        if (carseq == null || carseq.trim().isEmpty()) {
-	            int Insert = boardService.InsertCareer(careerVo);
-	            if (Insert <= 0) {
-	                allSuccess = false;
-	            }
-	        } else {
-	          
-	            careerVo.setCarseq(carseq);
-	            int update = boardService.UpdateCareer(careerVo); 
-	            if (update <= 0) {
-	                allSuccess = false;
-	            }
-	        }
-	    }
-
-	    
-	    List<Map<String, Object>> certificateList = (List<Map<String, Object>>) requestData.get("certificate");
-
-	    for (Map<String, Object> certificateData : certificateList) {
-	        
-	        if (certificateData.get("qualifiname") == null || ((String) certificateData.get("qualifiname")).trim().isEmpty() ||
-	            certificateData.get("acqudate") == null || ((String) certificateData.get("acqudate")).trim().isEmpty() ||
-	            certificateData.get("organizename") == null || ((String) certificateData.get("organizename")).trim().isEmpty()) {
-	            continue;
-	        }
-
-	        CertificateVo certificateVo = new CertificateVo();
-	        certificateVo.setSeq((String) recruitData.get("seq"));
-	        certificateVo.setQualifiname((String) certificateData.get("qualifiname"));
-	        certificateVo.setAcqudate((String) certificateData.get("acqudate"));
-	        certificateVo.setOrganizename((String) certificateData.get("organizename"));
-
-	       
-	        String certseq = (String) certificateData.get("certseq");
-
-	        if (certseq == null || certseq.trim().isEmpty()) {
-	            
-	            int insert = boardService.InsertCertificate(certificateVo);
-	            System.out.println("Insert Certificate Result: " + insert);
+	            int insert = boardService.InsertEducation(educationVo);
 	            if (insert <= 0) {
 	                allSuccess = false;
 	            }
 	        } else {
-	           
+	            educationVo.setEduseq(eduseq);
+	            int update = boardService.UpdateEducation(educationVo);
+	            if (update <= 0) {
+	                allSuccess = false;
+	            }
+	        }
+	    }
+	    
+	    List<Map<String, Object>> careerList = (List<Map<String, Object>>) requestData.get("career");
+	    for (Map<String, Object> careerData : careerList) {
+	        if (careerData == null || careerData.isEmpty()) continue;
+
+	        CareerVo careerVo = CareerVo.fromMap(careerData);
+	        careerVo.setSeq(recruitVo.getSeq());
+
+	        String carseq = (String) careerData.get("carseq");
+	        if (carseq == null || carseq.trim().isEmpty()) {
+	            int insert = boardService.InsertCareer(careerVo);
+	            if (insert <= 0) {
+	                allSuccess = false;
+	            }
+	        } else {
+	            careerVo.setCarseq(carseq);
+	            int update = boardService.UpdateCareer(careerVo);
+	            if (update <= 0) {
+	                allSuccess = false;
+	            }
+	        }
+	    }
+
+	    List<Map<String, Object>> certificateList = (List<Map<String, Object>>) requestData.get("certificate");
+	    for (Map<String, Object> certificateData : certificateList) {
+	        if (certificateData == null || certificateData.isEmpty()) continue;
+
+	        CertificateVo certificateVo = CertificateVo.fromMap(certificateData);
+	        certificateVo.setSeq(recruitVo.getSeq());
+
+	        String certseq = (String) certificateData.get("certseq");
+	        if (certseq == null || certseq.trim().isEmpty()) {
+	            int insert = boardService.InsertCertificate(certificateVo);
+	            if (insert <= 0) {
+	                allSuccess = false;
+	            }
+	        } else {
 	            certificateVo.setCertseq(certseq);
 	            int update = boardService.UpdateCertificate(certificateVo);
 	            if (update <= 0) {
@@ -598,11 +544,12 @@ public class BoardController {
 
 	    if (session != null) {
 	        session.invalidate();
-	    }	    
+	    }
+	    
 	    result.put("success", allSuccess ? "Y" : "N");
 	    return CommonUtil.getJsonCallBackString(" ", result);
+	}
 
-		}
 
 	@RequestMapping(value = "/board/resumeDeleteAction.do", method = RequestMethod.POST)
 	@ResponseBody

@@ -460,38 +460,49 @@
 
             $(this).val(v);
         });
+        
         $(document).on('input', 'input[name="task"]', function() { 
-            let v = $(this).val().replace(/[^\u3131-\u3163\uAC00-\uD7A3]/g, ''); // 한글만 허용
-            const maxLength = 6; // 최대 6자리로 설정
+           
+            let v = $(this).val().replace(/[^\u3131-\u3163\uAC00-\uD7A3]/g, '');
 
-            // 최대 길이 초과 처리
+            const maxLength = 6; 
+            
             if (v.length > maxLength) {
-                v = v.slice(0, maxLength); // 최대 길이를 초과하면 잘라냄
+                alert("부서/직급/직책 각각의 항목에 2글자씩 입력해주세요.");
+                v = v.slice(0, maxLength); 
             }
-
-            // 슬래시 추가 로직
-            let formattedValue = '';
-            for (let i = 0; i < v.length; i++) {
-                if (i > 0 && i % 2 === 0) {
-                    formattedValue += '/'; // 두 글자마다 슬래시 추가
-                }
-                formattedValue += v[i]; // 한 글자씩 추가
-            }
-
-            // 입력값을 업데이트합니다.
-            $(this).val(formattedValue);
+       
+            $(this).val(v);
         });
 
+        $(document).on('blur', 'input[name="task"]', function() {
+            let v = $(this).val();
+
+            // 6글자가 입력되었는지 확인
+            if (v.length === 6) {
+                let formattedValue = '';
+                for (let i = 0; i < v.length; i++) {
+                    formattedValue += v[i]; 
+                    if ((i + 1) % 2 === 0 && i < v.length - 1) {
+                        formattedValue += '/'; 
+                    }
+                }
+                $(this).val(formattedValue); 
+            }
+        });
 
         $(document).on('keydown', 'input[name="task"]', function(event) {
             if (event.key === 'Backspace') {
+                event.preventDefault();
                 const currentValue = $(this).val();
-                if (currentValue.length > 0) {
-                    $(this).val(currentValue.slice(0, -1));
+
+                if (currentValue.endsWith('/')) {
+                    $(this).val(currentValue.slice(0, -1)); 
                 }
+                $(this).val(currentValue.slice(0, -1)); 
             }
         });
- 
+
         $("#saveButton").on("click", function(event) {
             event.preventDefault();
             if (validateFields() && validateEmail()) {
@@ -619,27 +630,7 @@
 	    window.add_certificatetable = function() { add_table('certificate'); }
 	    window.del_certificatetable = function() { del_table('certificate'); }
 
-	    $("#task").on('input', function() {
-	        let v = $(this).val().replace(/[^a-zA-Z0-9]/g, ''); // 알파벳과 숫자만 허용
-	        const maxLength = 10;
-
-	        // 슬래시 추가 로직
-	        if (v.length >= 2) {
-	            v = v.slice(0, 2) + '/' + v.slice(2);
-	        }
-	        if (v.length >= 5) {
-	            v = v.slice(0, 5) + '/' + v.slice(5);
-	        }
-
-	        // 슬래시가 추가된 후 길이가 최대 길이를 초과하면 잘라냅니다.
-	        if (v.length > maxLength) {
-	            v = v.slice(0, maxLength);
-	        }
-
-	        // 입력값을 업데이트합니다.
-	        $(this).val(v);
-	    });
-
+	
 	});
 </script>
 </head>
@@ -907,7 +898,7 @@
 					                        <input type="month" class="endperiod" name="endperiod" value="${career.endperiod}" style="width: 80%;" onChange="setendmax(this.value, this)">
 					                    </td>
 					                    <td align="left"><input type="text" name="compname" value="${career.compname}" style="width: 97.5%;" maxlength="10"></td>
-					                    <td align="center"><input type="text" id="task" name="task" value="${career.task}" style="width: 93%;" maxlength="10" ></td>
+					                    <td align="center"><input type="text" id="task" name="task" value="${career.task}" style="width: 93%;" maxlength="10"></td>
 					                    <td align="center">
 					                        <input type="text" name="careerlocation" value="${career.careerlocation}" style="width: 93%;" maxlength="10">
 					                        <input type="hidden" name="carseq" value="${career.carseq}">

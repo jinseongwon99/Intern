@@ -983,7 +983,7 @@
                             </td>
                             <td width="80px" align="left">
                                 <input type="text" class="organizename" name="organizename" style="width: 80%;"maxlength="10">
-                                <input type="hidden" name="certseq" id="certseq">
+                                <input type="hidden" id="certseq" name="certseq" >
                             </td>
                         </tr>
                     </tbody>

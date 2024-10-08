@@ -205,4 +205,19 @@ public class BoardDaoImpl implements BoardDao{
 		return sqlSession.delete("board.certificateDelete", certseq);
 	}
 	
+   @Override
+    public EducationVo GetEducationByEduSeq(String eduseq) {
+        return sqlSession.selectOne("GetEducationByEduSeq", eduseq);
+    }
+
+    @Override
+    public CareerVo GetCareerByCarSeq(String carseq) {
+        return sqlSession.selectOne("GetCareerByCarSeq", carseq);
+    }
+
+    @Override
+    public CertificateVo GetCertificateByCertSeq(String certseq) {
+        return sqlSession.selectOne("GetCertificateByCertSeq", certseq);
+    }
+
 }

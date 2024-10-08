@@ -85,6 +85,8 @@
 		        const educationRows = document.querySelectorAll('#educationTBody tr:not(#educationTableRowTemplate)');
 		        const careerRows = document.querySelectorAll('#careerTBody tr:not(#careerTableRowTemplate)');
 
+		        let alertShown = false; 
+
 		        const checkOverlap = (otherRow, alertMessage) => {
 		            const otherStartInput = otherRow.querySelector('.startperiod');
 		            const otherEndInput = otherRow.querySelector('.endperiod');
@@ -95,17 +97,19 @@
 
 		                if (startPeriod && endPeriod && otherStart && otherEnd) {
 		                    if (startPeriod <= otherEnd && endPeriod >= otherStart) {
-		                        alert(alertMessage);
-		                        startInput.focus();
-		                        startInput.value = '';
-		                        endInput.value = '';
-		                        startInput.setAttribute("max", "");
-		                        endInput.setAttribute("min", "");
+		                        if (!alertShown) { 
+		                            alert(alertMessage);
+		                            alertShown = true; 
+		                            startInput.focus();
+		                            startInput.value = '';
+		                            endInput.value = '';
+		                            startInput.setAttribute("max", "");
+		                            endInput.setAttribute("min", "");
+		                        }
 		                    }
 		                }
 		            }
 		        };
-
 
 		        if (row.closest('#educationTBody')) {
 		            educationRows.forEach(eduRow => {
@@ -123,6 +127,7 @@
 		            });
 		        }
 		    }
+
 
 		    function validateBirthdate() {
 		        const birthInput = document.getElementById('birth');
@@ -206,7 +211,6 @@
 	    }
 
 	    setReadOnlyOrDisabled();
- 
 
 	    var data = [
 	        { "value": "서울", "text": "서울" },
@@ -227,7 +231,6 @@
 	        { "value": "경남", "text": "경남" },
 	        { "value": "제주", "text": "제주" }
 	    ];
-
 
 	    function populateSelect(selectElement, selectedValue) {
 	        if (selectElement) {
@@ -263,7 +266,6 @@
 
 	    initializeSelects();
 
-	    
 	    function collectTableData(type) {
 	        var tableData = [];
 	        document.querySelectorAll('table[id^="' + type + 'Table"]').forEach(function(table) {
@@ -299,7 +301,6 @@
 	        $(this).val(v);
 	    });
 	    
-
 	    $('#phone').on('input', function() {
 	        var input = $(this).val().replace(/[^0-9]/g, ''); 
 
@@ -351,7 +352,6 @@
 	            }
 	        }
 
-
 	        const careerRows = $('#careerTBody tr:not(#careerTableRowTemplate)');
 
 	        for (let i = 0; i < careerRows.length; i++) {
@@ -378,7 +378,6 @@
 	                }
 	            }
 	        }
-
 
 	        const certificateRows = $('#certificateTBody tr:not(#certificateTableRowTemplate)');
 
@@ -436,11 +435,13 @@
 	            dataType: "json",
 	            success: function(response) {
 	                if (response.success === "Y") {
+	                    alert(submitValue + ' 했습니다');
 	                    location.href = "/board/login.do";
 	                }
 	            },
 	        });
 	    }
+
 
         $(document).on('input', 'input[name="grade"]', function() {
             var v = $(this).val().replace(/[^0-9.]/g, ''); 
@@ -629,7 +630,6 @@
 	    window.add_certificatetable = function() { add_table('certificate'); }
 	    window.del_certificatetable = function() { del_table('certificate'); }
 
-	
 	});
 </script>
 </head>
@@ -925,7 +925,6 @@
 					        </tbody>
 					    </table>
 					</c:if>
-
 				<c:set var="isSubmit" value="false" />
 					<c:choose>
 					    <c:when test="${not empty recruitList}">

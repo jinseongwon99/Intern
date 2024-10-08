@@ -1,6 +1,7 @@
 package com.spring.board.vo;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class EducationVo {
 	
@@ -69,7 +70,40 @@ public class EducationVo {
 	}
  	
 
-    public static EducationVo fromMap(Map<String, Object> map) {
+	@Override
+	public String toString() {
+	    return "{" +
+	           "startperiod='" + startperiod + '\'' +
+	           ", endperiod='" + endperiod + '\'' +
+	           ", division='" + division + '\'' +
+	           ", schoolname='" + schoolname + '\'' +
+	           ", schoollocation='" + schoollocation + '\'' +
+	           ", major='" + major + '\'' +
+	           ", grade='" + grade + '\'' +
+	           '}';
+	}
+	
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof EducationVo)) return false;
+        EducationVo other = (EducationVo) obj;
+        return 
+               Objects.equals(schoolname, other.schoolname) &&
+               Objects.equals(division, other.division) &&
+               Objects.equals(startperiod, other.startperiod) &&
+               Objects.equals(endperiod, other.endperiod) &&
+               Objects.equals(major, other.major) &&
+               Objects.equals(grade, other.grade) &&
+               Objects.equals(schoollocation, other.schoollocation);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eduseq, seq, schoolname, division, startperiod, endperiod, major, grade, schoollocation);
+    }
+
+	public static EducationVo fromMap(Map<String, Object> map) {
         EducationVo educationVo = new EducationVo();
         educationVo.setSchoolname((String) map.get("schoolname"));
         educationVo.setDivision((String) map.get("division"));

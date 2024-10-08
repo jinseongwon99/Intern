@@ -1,6 +1,7 @@
 package com.spring.board.vo;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class CareerVo {
 
@@ -69,5 +70,38 @@ public class CareerVo {
 	        careerVo.setEndperiod((String) map.get("endperiod"));
 	        careerVo.setTask((String) map.get("task"));
 	        return careerVo;
+	    }
+	  
+	  @Override
+	    public boolean equals(Object obj) {
+	        if (this == obj) return true;
+	        if (!(obj instanceof CareerVo)) return false;
+	        CareerVo other = (CareerVo) obj;
+	        return
+	               Objects.equals(seq, other.seq) &&
+	               Objects.equals(compname, other.compname) &&
+	               Objects.equals(careerlocation, other.careerlocation) &&
+	               Objects.equals(startperiod, other.startperiod) &&
+	               Objects.equals(endperiod, other.endperiod) &&
+	               Objects.equals(task, other.task);
+	               
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return Objects.hash(carseq, seq, compname, careerlocation, startperiod, endperiod, task, salary);
+	    }
+
+	    @Override
+	    public String toString() {
+	        return "CareerVo {" +	             
+	               ", seq='" + seq + '\'' +
+	               ", compname='" + compname + '\'' +
+	               ", careerlocation='" + careerlocation + '\'' +
+	               ", startperiod='" + startperiod + '\'' +
+	               ", endperiod='" + endperiod + '\'' +
+	               ", task='" + task + '\'' +
+	      
+	               '}';
 	    }
 }

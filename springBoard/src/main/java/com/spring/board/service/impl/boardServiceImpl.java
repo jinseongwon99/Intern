@@ -215,4 +215,19 @@ import com.spring.board.vo.UserInfoVo;
 			return boardDao.certificateDelete(certseq);
 		}
 		
+	 @Override
+	    public EducationVo GetEducationByEduSeq(String eduseq) {
+	        return boardDao.GetEducationByEduSeq(eduseq);
+	    }
+
+	    @Override
+	    public CareerVo GetCareerByCarSeq(String carseq) {
+	        return boardDao.GetCareerByCarSeq(carseq);
+	    }
+
+	    @Override
+	    public CertificateVo GetCertificateByCertSeq(String certseq) {
+	        return boardDao.GetCertificateByCertSeq(certseq);
+	    }
+		
 	}

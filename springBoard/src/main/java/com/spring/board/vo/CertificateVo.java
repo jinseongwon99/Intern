@@ -1,6 +1,7 @@
 package com.spring.board.vo;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class CertificateVo {
 
@@ -47,5 +48,33 @@ public class CertificateVo {
         certificateVo.setAcqudate((String) map.get("acqudate"));
         certificateVo.setOrganizename((String) map.get("organizename"));
         return certificateVo;
+    }
+	
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof CertificateVo)) return false;
+        CertificateVo other = (CertificateVo) obj;
+        return 
+               Objects.equals(seq, other.seq) &&
+               Objects.equals(qualifiname, other.qualifiname) &&
+               Objects.equals(acqudate, other.acqudate) &&
+               Objects.equals(organizename, other.organizename);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(certseq, seq, qualifiname, acqudate, organizename);
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateVo {" +
+               ", seq='" + seq + '\'' +
+               ", qualifiname='" + qualifiname + '\'' +
+               ", acqudate='" + acqudate + '\'' +
+               ", organizename='" + organizename + '\'' +
+               '}';
     }
 }

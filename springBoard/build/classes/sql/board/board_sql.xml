@@ -436,4 +436,32 @@
         WHERE
             CERT_SEQ = #{certseq}
     </delete>
+    
+    <select id="GetEducationByEduSeq" resultMap="EducationVo">
+    SELECT
+        *
+    FROM 
+        Education
+    WHERE 
+        EDU_SEQ = #{eduseq, jdbcType=VARCHAR}
+</select>
+
+<select id="GetCareerByCarSeq" resultMap="CareerVo">
+    SELECT
+        *
+    FROM 
+        Career
+    WHERE 
+        CAR_SEQ = #{carseq, jdbcType=VARCHAR}
+</select>
+
+<select id="GetCertificateByCertSeq" resultMap="CertificateVo">
+    SELECT
+        *
+    FROM 
+        Certificate
+    WHERE 
+        CERT_SEQ = #{certseq, jdbcType=VARCHAR}
+</select>
+    
 </mapper>

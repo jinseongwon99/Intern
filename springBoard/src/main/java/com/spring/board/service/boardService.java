@@ -72,4 +72,8 @@ public interface boardService {
 	public int careerDelete(String carseq) throws Exception;
 	
 	public int certificateDelete(String certseq) throws Exception;
+	
+    EducationVo GetEducationByEduSeq(String eduseq);
+    CareerVo GetCareerByCarSeq(String carseq);
+    CertificateVo GetCertificateByCertSeq(String certseq);
 }

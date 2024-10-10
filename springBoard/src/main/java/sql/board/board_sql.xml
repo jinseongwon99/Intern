@@ -254,9 +254,6 @@
 	        #{phone}
 	    )
 	</insert>
-	
-
-
     
     <select id="Check" parameterType="String" resultType="String">
         SELECT 
@@ -279,189 +276,189 @@
         SUBMIT = #{submit, jdbcType=VARCHAR}
     WHERE
         SEQ = #{seq, jdbcType=VARCHAR}
-</update>
+	</update>
 
-<insert id="InsertEducation" parameterType="com.spring.board.vo.EducationVo">
-    INSERT INTO Education (
-        EDU_SEQ,
-        SEQ,
-        SCHOOL_NAME,
-        DIVISION,
-        START_PERIOD,
-        END_PERIOD,
-        MAJOR,
-        GRADE,
-        SCHOOL_LOCATION
-    )
-    VALUES (
-        EDU_SEQ.NEXTVAL,
-        #{seq, jdbcType=VARCHAR},
-        #{schoolname, jdbcType=VARCHAR},
-        #{division, jdbcType=VARCHAR},
-        #{startperiod, jdbcType=VARCHAR},
-        #{endperiod, jdbcType=VARCHAR},
-        #{major, jdbcType=VARCHAR},
-        #{grade, jdbcType=VARCHAR},
-        #{schoollocation, jdbcType=VARCHAR}
-    )
-</insert>
-
-
-<insert id="InsertCareer" parameterType="com.spring.board.vo.CareerVo">
-    INSERT INTO Career (
-        CAR_SEQ,
-        SEQ,
-        COMP_NAME,
-        CAREER_LOCATION,
-        START_PERIOD,
-        END_PERIOD,
-        TASK,
-        SALARY
-    )
-    VALUES (
-        CAR_SEQ.NEXTVAL,
-        #{seq, jdbcType=INTEGER},
-        #{compname, jdbcType=VARCHAR},
-        #{careerlocation, jdbcType=VARCHAR},
-        #{startperiod, jdbcType=VARCHAR},
-        #{endperiod, jdbcType=VARCHAR},
-        #{task, jdbcType=VARCHAR},
-        '회사내규로 고정'
-    )
-</insert>
-
-<insert id="InsertCertificate" parameterType="com.spring.board.vo.CertificateVo">
-    INSERT INTO Certificate (
-        CERT_SEQ,
-        SEQ,
-        QUALIFI_NAME,
-        ACQU_DATE,
-        ORGANIZE_NAME
-    )
-    VALUES (
-        CERT_SEQ.NEXTVAL,
-        #{seq, jdbcType=INTEGER},
-        #{qualifiname, jdbcType=VARCHAR},
-        #{acqudate, jdbcType=VARCHAR},
-        #{organizename, jdbcType=VARCHAR}
-    )
-</insert>
-
-<select id="recruitList" resultMap="RecruitVo">
-    SELECT
-        *
-    FROM 
-        Recruit
-    WHERE 
-        SEQ = #{seq, jdbcType=VARCHAR}
-</select>
-
-<select id="educationList" resultMap="EducationVo">
-    SELECT
-        *
-    FROM 
-        Education
-    WHERE 
-        SEQ = #{seq, jdbcType=VARCHAR}
-</select>
-
-<select id="careerList" resultMap="CareerVo">
-    SELECT
-        *
-    FROM 
-        Career
-    WHERE 
-        SEQ = #{seq, jdbcType=VARCHAR}
-</select>
-
-<select id="certificateList" resultMap="CertificateVo">
-    SELECT
-        *
-    FROM 
-        Certificate
-    WHERE 
-        SEQ = #{seq, jdbcType=VARCHAR}
-</select>
-
-   <update id="UpdateEducation" parameterType="com.spring.board.vo.EducationVo">
-    UPDATE EDUCATION
-    SET
-        SCHOOL_NAME = #{schoolname, jdbcType=VARCHAR},
-        DIVISION = #{division, jdbcType=VARCHAR},
-        START_PERIOD = #{startperiod, jdbcType=VARCHAR},
-        END_PERIOD = #{endperiod, jdbcType=VARCHAR},
-        MAJOR = #{major, jdbcType=VARCHAR},
-        GRADE = #{grade, jdbcType=VARCHAR},
-        SCHOOL_LOCATION = #{schoollocation, jdbcType=VARCHAR}
-    WHERE
-        EDU_SEQ = #{eduseq, jdbcType=VARCHAR}
-</update>
-
-   <update id="UpdateCareer" parameterType="com.spring.board.vo.CareerVo">
-    UPDATE CAREER
-    SET
-        COMP_NAME = #{compname, jdbcType=VARCHAR},
-        CAREER_LOCATION = #{careerlocation, jdbcType=VARCHAR},
-        START_PERIOD = #{startperiod, jdbcType=VARCHAR},
-        END_PERIOD = #{endperiod, jdbcType=VARCHAR},
-        TASK = #{task, jdbcType=VARCHAR}      
-    WHERE
-        CAR_SEQ = #{carseq, jdbcType=VARCHAR}
-</update>
-
-   <update id="UpdateCertificate" parameterType="com.spring.board.vo.CertificateVo">
-    UPDATE CERTIFICATE
-    SET
-        QUALIFI_NAME = #{qualifiname, jdbcType=VARCHAR},
-        ACQU_DATE = #{acqudate, jdbcType=VARCHAR},
-        ORGANIZE_NAME = #{organizename, jdbcType=VARCHAR}
-    WHERE
-        CERT_SEQ = #{certseq, jdbcType=VARCHAR}
-</update>
-
-    <delete id="educationDelete" parameterType="com.spring.board.vo.EducationVo">
-        DELETE FROM EDUCATION
-        WHERE
-            EDU_SEQ = #{eduseq}
-    </delete>
-    
-        <delete id="careerDelete" parameterType="com.spring.board.vo.CareerVo">
-        DELETE FROM CAREER
-        WHERE
-            CAR_SEQ = #{carseq}
-    </delete>
-    
-        <delete id="certificateDelete" parameterType="com.spring.board.vo.CertificateVo">
-        DELETE FROM CERTIFICATE
-        WHERE
-            CERT_SEQ = #{certseq}
-    </delete>
-    
-    <select id="GetEducationByEduSeq" resultMap="EducationVo">
-    SELECT
-        *
-    FROM 
-        Education
-    WHERE 
-        EDU_SEQ = #{eduseq, jdbcType=VARCHAR}
-</select>
-
-<select id="GetCareerByCarSeq" resultMap="CareerVo">
-    SELECT
-        *
-    FROM 
-        Career
-    WHERE 
-        CAR_SEQ = #{carseq, jdbcType=VARCHAR}
-</select>
-
-<select id="GetCertificateByCertSeq" resultMap="CertificateVo">
-    SELECT
-        *
-    FROM 
-        Certificate
-    WHERE 
-        CERT_SEQ = #{certseq, jdbcType=VARCHAR}
-</select>
-    
+	<insert id="InsertEducation" parameterType="com.spring.board.vo.EducationVo">
+	    INSERT INTO Education (
+	        EDU_SEQ,
+	        SEQ,
+	        SCHOOL_NAME,
+	        DIVISION,
+	        START_PERIOD,
+	        END_PERIOD,
+	        MAJOR,
+	        GRADE,
+	        SCHOOL_LOCATION
+	    )
+	    VALUES (
+	        EDU_SEQ.NEXTVAL,
+	        #{seq, jdbcType=VARCHAR},
+	        #{schoolname, jdbcType=VARCHAR},
+	        #{division, jdbcType=VARCHAR},
+	        #{startperiod, jdbcType=VARCHAR},
+	        #{endperiod, jdbcType=VARCHAR},
+	        #{major, jdbcType=VARCHAR},
+	        #{grade, jdbcType=VARCHAR},
+	        #{schoollocation, jdbcType=VARCHAR}
+	    )
+	</insert>
+	
+	
+	<insert id="InsertCareer" parameterType="com.spring.board.vo.CareerVo">
+	    INSERT INTO Career (
+	        CAR_SEQ,
+	        SEQ,
+	        COMP_NAME,
+	        CAREER_LOCATION,
+	        START_PERIOD,
+	        END_PERIOD,
+	        TASK,
+	        SALARY
+	    )
+	    VALUES (
+	        CAR_SEQ.NEXTVAL,
+	        #{seq, jdbcType=INTEGER},
+	        #{compname, jdbcType=VARCHAR},
+	        #{careerlocation, jdbcType=VARCHAR},
+	        #{startperiod, jdbcType=VARCHAR},
+	        #{endperiod, jdbcType=VARCHAR},
+	        #{task, jdbcType=VARCHAR},
+	        '회사내규로 고정'
+	    )
+	</insert>
+	
+	<insert id="InsertCertificate" parameterType="com.spring.board.vo.CertificateVo">
+	    INSERT INTO Certificate (
+	        CERT_SEQ,
+	        SEQ,
+	        QUALIFI_NAME,
+	        ACQU_DATE,
+	        ORGANIZE_NAME
+	    )
+	    VALUES (
+	        CERT_SEQ.NEXTVAL,
+	        #{seq, jdbcType=INTEGER},
+	        #{qualifiname, jdbcType=VARCHAR},
+	        #{acqudate, jdbcType=VARCHAR},
+	        #{organizename, jdbcType=VARCHAR}
+	    )
+	</insert>
+	
+	<select id="recruitList" resultMap="RecruitVo">
+	    SELECT
+	        *
+	    FROM 
+	        Recruit
+	    WHERE 
+	        SEQ = #{seq, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="educationList" resultMap="EducationVo">
+	    SELECT
+	        *
+	    FROM 
+	        Education
+	    WHERE 
+	        SEQ = #{seq, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="careerList" resultMap="CareerVo">
+	    SELECT
+	        *
+	    FROM 
+	        Career
+	    WHERE 
+	        SEQ = #{seq, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="certificateList" resultMap="CertificateVo">
+	    SELECT
+	        *
+	    FROM 
+	        Certificate
+	    WHERE 
+	        SEQ = #{seq, jdbcType=VARCHAR}
+	</select>
+	
+	   <update id="UpdateEducation" parameterType="com.spring.board.vo.EducationVo">
+	    UPDATE EDUCATION
+	    SET
+	        SCHOOL_NAME = #{schoolname, jdbcType=VARCHAR},
+	        DIVISION = #{division, jdbcType=VARCHAR},
+	        START_PERIOD = #{startperiod, jdbcType=VARCHAR},
+	        END_PERIOD = #{endperiod, jdbcType=VARCHAR},
+	        MAJOR = #{major, jdbcType=VARCHAR},
+	        GRADE = #{grade, jdbcType=VARCHAR},
+	        SCHOOL_LOCATION = #{schoollocation, jdbcType=VARCHAR}
+	    WHERE
+	        EDU_SEQ = #{eduseq, jdbcType=VARCHAR}
+	</update>
+	
+	   <update id="UpdateCareer" parameterType="com.spring.board.vo.CareerVo">
+	    UPDATE CAREER
+	    SET
+	        COMP_NAME = #{compname, jdbcType=VARCHAR},
+	        CAREER_LOCATION = #{careerlocation, jdbcType=VARCHAR},
+	        START_PERIOD = #{startperiod, jdbcType=VARCHAR},
+	        END_PERIOD = #{endperiod, jdbcType=VARCHAR},
+	        TASK = #{task, jdbcType=VARCHAR}      
+	    WHERE
+	        CAR_SEQ = #{carseq, jdbcType=VARCHAR}
+	</update>
+	
+	   <update id="UpdateCertificate" parameterType="com.spring.board.vo.CertificateVo">
+	    UPDATE CERTIFICATE
+	    SET
+	        QUALIFI_NAME = #{qualifiname, jdbcType=VARCHAR},
+	        ACQU_DATE = #{acqudate, jdbcType=VARCHAR},
+	        ORGANIZE_NAME = #{organizename, jdbcType=VARCHAR}
+	    WHERE
+	        CERT_SEQ = #{certseq, jdbcType=VARCHAR}
+	</update>
+	
+	    <delete id="educationDelete" parameterType="com.spring.board.vo.EducationVo">
+	        DELETE FROM EDUCATION
+	        WHERE
+	            EDU_SEQ = #{eduseq}
+	    </delete>
+	    
+	        <delete id="careerDelete" parameterType="com.spring.board.vo.CareerVo">
+	        DELETE FROM CAREER
+	        WHERE
+	            CAR_SEQ = #{carseq}
+	    </delete>
+	    
+	        <delete id="certificateDelete" parameterType="com.spring.board.vo.CertificateVo">
+	        DELETE FROM CERTIFICATE
+	        WHERE
+	            CERT_SEQ = #{certseq}
+	    </delete>
+	    
+	    <select id="GetEducationByEduSeq" resultMap="EducationVo">
+	    SELECT
+	        *
+	    FROM 
+	        Education
+	    WHERE 
+	        EDU_SEQ = #{eduseq, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="GetCareerByCarSeq" resultMap="CareerVo">
+	    SELECT
+	        *
+	    FROM 
+	        Career
+	    WHERE 
+	        CAR_SEQ = #{carseq, jdbcType=VARCHAR}
+	</select>
+	
+	<select id="GetCertificateByCertSeq" resultMap="CertificateVo">
+	    SELECT
+	        *
+	    FROM 
+	        Certificate
+	    WHERE 
+	        CERT_SEQ = #{certseq, jdbcType=VARCHAR}
+	</select>
+	    
 </mapper>

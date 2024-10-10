@@ -365,19 +365,29 @@
 	                { name: '지역', field: rowElement.find('input[name="careerlocation"]') }
 	            ];
 
-
 	            const hasAnyInput = fields.some(({ field }) => field.val());
 
 	            if (hasAnyInput) {
 	                for (const { name, field } of fields) {
 	                    if (!field.val()) {
-	                    	alert(name + '을 입력해주세요.');
+	                        alert(name + '을 입력해주세요.');
 	                        field.focus();
 	                        return false;
 	                    }
 	                }
+
+	                const taskField = rowElement.find('input[name="task"]');
+	                const taskValue = taskField.val();
+	                const taskPattern = /^[^/]+\/[^/]+\/[^/]+$/; 
+
+	                if (!taskPattern.test(taskValue)) {
+	                    alert('부서/직급/직책은 "부서/직급/직책" 형식이어야 합니다.');
+	                    taskField.focus();
+	                    return false;
+	                }
 	            }
 	        }
+
 
 	        const certificateRows = $('#certificateTBody tr:not(#certificateTableRowTemplate)');
 
@@ -462,47 +472,6 @@
             $(this).val(v);
         });
         
-        $(document).on('input', 'input[name="task"]', function() { 
-           
-            let v = $(this).val().replace(/[^\u3131-\u3163\uAC00-\uD7A3]/g, '');
-
-            const maxLength = 6; 
-            
-            if (v.length > maxLength) {
-                alert("부서/직급/직책 각각의 항목에 2글자씩 입력해주세요.");
-                v = v.slice(0, maxLength); 
-            }
-       
-            $(this).val(v);
-        });
-
-        $(document).on('blur', 'input[name="task"]', function() {
-            let v = $(this).val();
-
-            if (v.length === 6) {
-                let formattedValue = '';
-                for (let i = 0; i < v.length; i++) {
-                    formattedValue += v[i]; 
-                    if ((i + 1) % 2 === 0 && i < v.length - 1) {
-                        formattedValue += '/'; 
-                    }
-                }
-                $(this).val(formattedValue); 
-            }
-        });
-
-        $(document).on('keydown', 'input[name="task"]', function(event) {
-            if (event.key === 'Backspace') {
-                event.preventDefault();
-                const currentValue = $(this).val();
-
-                if (currentValue.endsWith('/')) {
-                    $(this).val(currentValue.slice(0, -1)); 
-                }
-                $(this).val(currentValue.slice(0, -1)); 
-            }
-        });
-
         $("#saveButton").on("click", function(event) {
             event.preventDefault();
             if (validateFields() && validateEmail()) {

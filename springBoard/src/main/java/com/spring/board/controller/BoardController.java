@@ -500,7 +500,7 @@ public class BoardController {
 	        	        allSuccess = false;
 	        	    }
 	        	} else {
-	        	    System.out.println("EDU_SEQ " + eduseq + "의 데이터는 변경 사항이 없습니다.");
+	        	    System.out.println("edu 데이터는 변경 사항이 없습니다.");
 	        	}
 
 	        }
@@ -513,25 +513,29 @@ public class BoardController {
 	        CareerVo careerVo = CareerVo.fromMap(careerData);
 	        careerVo.setSeq(recruitVo.getSeq());
 	        String carseq = (String) careerData.get("carseq");
+	        String compName = (String) careerData.get("compname");
+	        if (compName != null && !compName.trim().isEmpty()) { 
 
-	        if (carseq == null || carseq.trim().isEmpty()) {
-	            int insert = boardService.InsertCareer(careerVo);
-	            if (insert <= 0) {
-	                allSuccess = false;
-	            }
-	        } else {
-	            CareerVo existingCareer = boardService.GetCareerByCarSeq(carseq);
-	            if (existingCareer != null && !existingCareer.equals(careerVo)) {
-	                careerVo.setCarseq(carseq);
-	                int update = boardService.UpdateCareer(careerVo);
-	                if (update <= 0) {
+	            if (carseq == null || carseq.trim().isEmpty()) {
+	                int insert = boardService.InsertCareer(careerVo);
+	                if (insert <= 0) {
 	                    allSuccess = false;
 	                }
-	            } else {
-	                System.out.println("CAR_SEQ " + carseq + "의 데이터는 변경 사항이 없습니다.");
+	            } else {	   
+	                CareerVo existingCareer = boardService.GetCareerByCarSeq(carseq);
+	                if (existingCareer != null && !existingCareer.equals(careerVo)) {
+	                    careerVo.setCarseq(carseq);
+	                    int update = boardService.UpdateCareer(careerVo);
+	                    if (update <= 0) {
+	                        allSuccess = false;
+	                    }
+	                } else {
+	                    System.out.println("car 데이터는 변경 사항이 없습니다.");
+	                }
 	            }
 	        }
 	    }
+
 
 	    List<Map<String, Object>> certificateList = (List<Map<String, Object>>) requestData.get("certificate");
 	    for (Map<String, Object> certificateData : certificateList) {
@@ -540,25 +544,30 @@ public class BoardController {
 	        CertificateVo certificateVo = CertificateVo.fromMap(certificateData);
 	        certificateVo.setSeq(recruitVo.getSeq());
 	        String certseq = (String) certificateData.get("certseq");
+	        String qualifiname = (String) certificateData.get("qualifiname");
+	        if (qualifiname != null && !qualifiname.trim().isEmpty()) {
 
-	        if (certseq == null || certseq.trim().isEmpty()) {
-	            int insert = boardService.InsertCertificate(certificateVo);
-	            if (insert <= 0) {
-	                allSuccess = false;
-	            }
-	        } else {
-	            CertificateVo existingCertificate = boardService.GetCertificateByCertSeq(certseq);
-	            if (existingCertificate != null && !existingCertificate.equals(certificateVo)) {
-	                certificateVo.setCertseq(certseq);
-	                int update = boardService.UpdateCertificate(certificateVo);
-	                if (update <= 0) {
+	            if (certseq == null || certseq.trim().isEmpty()) {
+	                int insert = boardService.InsertCertificate(certificateVo);
+	                if (insert <= 0) {
 	                    allSuccess = false;
 	                }
-	            } else {
-	                System.out.println("CERT_SEQ " + certseq + "의 데이터는 변경 사항이 없습니다.");
+	            } else {	    
+	                    CertificateVo existingCertificate = boardService.GetCertificateByCertSeq(certseq);
+	                    if (existingCertificate != null && !existingCertificate.equals(certificateVo)) {
+	                        certificateVo.setCertseq(certseq);
+	                        int update = boardService.UpdateCertificate(certificateVo);
+	                        if (update <= 0) {
+	                            allSuccess = false;
+	                        }
+	                    } else {
+	                        System.out.println("cert 데이터는 변경 사항이 없습니다.");
+	                    }	                
 	            }
 	        }
 	    }
+
+
 
 	    if (session != null) {
 	        session.invalidate();

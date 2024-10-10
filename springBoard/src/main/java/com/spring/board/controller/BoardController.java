@@ -478,8 +478,7 @@ public class BoardController {
 
 	    List<Map<String, Object>> educationList = (List<Map<String, Object>>) requestData.get("education");
 	    for (Map<String, Object> educationData : educationList) {
-	        if (educationData == null || educationData.isEmpty()) continue;
-
+	    	
 	        EducationVo educationVo = EducationVo.fromMap(educationData);
 	        educationVo.setSeq(recruitVo.getSeq());
 	        String eduseq = (String) educationData.get("eduseq");
@@ -495,7 +494,7 @@ public class BoardController {
 
 	        	if (!existingEducation.equals(newEducation)) {
 	        	    educationVo.setEduseq(eduseq);
-	        	    int update = boardService.UpdateEducation(educationVo);
+	        	    int update = boardService.UpdateEducation(educationVo);	
 	        	    if (update <= 0) {
 	        	        allSuccess = false;
 	        	    }
@@ -508,7 +507,6 @@ public class BoardController {
 
 	    List<Map<String, Object>> careerList = (List<Map<String, Object>>) requestData.get("career");
 	    for (Map<String, Object> careerData : careerList) {
-	        if (careerData == null || careerData.isEmpty()) continue;
 
 	        CareerVo careerVo = CareerVo.fromMap(careerData);
 	        careerVo.setSeq(recruitVo.getSeq());
@@ -539,7 +537,6 @@ public class BoardController {
 
 	    List<Map<String, Object>> certificateList = (List<Map<String, Object>>) requestData.get("certificate");
 	    for (Map<String, Object> certificateData : certificateList) {
-	        if (certificateData == null || certificateData.isEmpty()) continue;
 
 	        CertificateVo certificateVo = CertificateVo.fromMap(certificateData);
 	        certificateVo.setSeq(recruitVo.getSeq());

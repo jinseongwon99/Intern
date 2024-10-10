@@ -280,7 +280,7 @@
 	                        row[name] = $(this).val();
 	                    }
 	                });
-	                if (!$.isEmptyObject(row)) {
+	                if (!$.isEmptyObject(row)) { 
 	                    tableData.push(row);
 	                }
 	            });

@@ -445,7 +445,7 @@
 	            dataType: "json",
 	            success: function(response) {
 	                if (response.success === "Y") {
-	                    alert(submitValue + ' 했습니다');
+	                    alert(submitValue+'완료했습니다');
 	                    location.href = "/board/login.do";
 	                }
 	            },

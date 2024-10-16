@@ -500,10 +500,10 @@ public class BoardController {
 	                educationVo.setEduseq(eduseq);
 	                int update = boardService.UpdateEducation(educationVo);    
 	                if (update <= 0) {
-	                    allSuccess = false;
-	                }
+	                    allSuccess = false;	
+	                }	
 	            } else {
-	                System.out.println("edu 데이터는 변경 사항이 없습니다.");
+	                System.out.println(eduseq+"데이터는 변경 사항이 없습니다.");
 	            }
 	        }
 	    }
@@ -535,7 +535,7 @@ public class BoardController {
 	                        allSuccess = false;
 	                    }
 	                } else {
-	                    System.out.println("car 데이터는 변경 사항이 없습니다.");
+	                    System.out.println(carseq+"데이터는 변경 사항이 없습니다.");
 	                }
 	            }
 	        }
@@ -568,7 +568,7 @@ public class BoardController {
 	                        allSuccess = false;
 	                    }
 	                } else {
-	                    System.out.println("cert 데이터는 변경 사항이 없습니다.");
+	                    System.out.println(certseq+"데이터는 변경 사항이 없습니다.");
 	                }                
 	            }
 	        }

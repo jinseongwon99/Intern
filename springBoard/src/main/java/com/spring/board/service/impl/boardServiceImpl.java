@@ -221,12 +221,12 @@ import com.spring.board.vo.UserInfoVo;
 	    }
 
 	    @Override
-	    public CareerVo GetCareerByCarSeq(String carseq) {
+	    public CareerVo GetCareerByCarSeq(String carseq)  {
 	        return boardDao.GetCareerByCarSeq(carseq);
 	    }
 
 	    @Override
-	    public CertificateVo GetCertificateByCertSeq(String certseq) {
+	    public CertificateVo GetCertificateByCertSeq(String certseq)  {
 	        return boardDao.GetCertificateByCertSeq(certseq);
 	    }
 		

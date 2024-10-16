@@ -73,11 +73,11 @@ public interface BoardDao {
 	
 	public int certificateDelete(String certseq) throws Exception;
     
-	EducationVo GetEducationByEduSeq(String eduseq);
+	 EducationVo GetEducationByEduSeq(String eduseq);
     
-	CareerVo GetCareerByCarSeq(String carseq);
+	 CareerVo GetCareerByCarSeq(String carseq);
     
-	CertificateVo GetCertificateByCertSeq(String certseq);
+	 CertificateVo GetCertificateByCertSeq(String certseq);
 
 }
 	

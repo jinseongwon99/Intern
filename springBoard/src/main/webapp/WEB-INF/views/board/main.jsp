@@ -500,7 +500,7 @@
 	        educationIdx: 0,
 	        careerIdx: 0,
 	        certificateIdx: 0
-	    };
+	    };		
 
 	    function add_table(type) {
 	        var currentIndex = window.tableIndexes[type + 'Idx'] + 1;

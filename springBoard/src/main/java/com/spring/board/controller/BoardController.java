@@ -503,7 +503,7 @@ public class BoardController {
 	                    allSuccess = false;	
 	                }	
 	            } else {
-	                System.out.println(eduseq+"데이터는 변경 사항이 없습니다.");
+	                System.out.println(eduseq + "Education 데이터는 변경 사항이 없습니다.");
 	            }
 	        }
 	    }
@@ -517,7 +517,7 @@ public class BoardController {
 
 	        if (compName != null && !compName.trim().isEmpty()) { 
 	            if (carseq == null || carseq.trim().isEmpty()) {
-	                int insert = boardService.InsertCareer(careerVo);
+	                int insert = boardService.InsertCareer(careerVo);	
 	                if (insert <= 0) {
 	                    allSuccess = false;
 	                }
@@ -535,7 +535,7 @@ public class BoardController {
 	                        allSuccess = false;
 	                    }
 	                } else {
-	                    System.out.println(carseq+"데이터는 변경 사항이 없습니다.");
+	                    System.out.println(carseq + "Career 데이터는 변경 사항이 없습니다.");
 	                }
 	            }
 	        }
@@ -568,7 +568,7 @@ public class BoardController {
 	                        allSuccess = false;
 	                    }
 	                } else {
-	                    System.out.println(certseq+"데이터는 변경 사항이 없습니다.");
+	                    System.out.println(certseq + "Certificate 데이터는 변경 사항이 없습니다.");
 	                }                
 	            }
 	        }
